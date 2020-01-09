@@ -1,0 +1,63 @@
+:srcdir: {docdir}/chapters/concept/
+[[section-solution-strategy-and-concepts]]
+== Solution Strategy and Concepts
+
+The following non-functional requirements/concepts have to be fulfilled by each Self Contained System. This requirements are  summarized and described in detail in the following sections.
+
+include::{srcdir}security/Security.adoc[leveloffset=+1]
+
+=== Interfacing
+Todo Introduction
+
+==== Pull over Push
+TODO
+
+==== API-Gateway
+TODO
+
+include::{srcdir}interfaces/REST/rest.adoc[leveloffset=+2]
+
+include::{srcdir}interfaces/events/events.adoc[leveloffset=+2]
+
+include::{srcdir}interfaces/servicediscovery.adoc[leveloffset=+1]
+
+include::{srcdir}configuration/Configuration.adoc[leveloffset=+1]
+
+include::{srcdir}logging/Logging.adoc[leveloffset=+1]
+
+include::{srcdir}ui/UI.adoc[leveloffset=+1]
+
+=== Self contained systems
+TODO
+
+=== Containerization
+TODO
+
+include::{srcdir}naming_and_versioning/naming_and_versioning.adoc[leveloffset=+2]
+
+=== Domain Driven Design
+TODO
+
+=== Resource Limitations
+TODO
+
+=== Liveness / Readyness Probes
+TODO
+
+=== Documentation
+TODO
+
+==== ARC42
+TODO
+
+==== FM-Module Infos
+TODO
+
+==== Persistence
+TODO
+
+[[section-solution-design]]
+== Solution Design
+This section describes the topology and the overall design of the deployed solution. Each solution will be deployed into a Kubernetes cluster which will be the runtime environment for the solution/project.
+
+TODO add overview image of cluster 

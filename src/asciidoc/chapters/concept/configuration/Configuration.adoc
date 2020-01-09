@@ -1,0 +1,30 @@
+== Configuration
+
+A service configuration is everything that is likely to vary between deploys (staging, production, developer environments, etc). This includes technical resource handles to the database, memcached, and other backing services or credentials and connection strings to other services. Further, configuration may also consist of system specific  informations like topologies, location, etc.
+
+Services are not allowed to store config as constants in the code, which requires strict separation of config from code. Config varies substantially across deploys, code does not.
+Note that this definition of “config” does not include internal application config, like how code modules are connected in Spring. This type of config does not vary between deploys, and so is best done in the code or within the delivered artefact.
+
+In a dedicated system, multiple system configuration files can be available. Services may also provide as many service specific configuration files as needed, separating different configuration topics.
+
+Services may introduce configuration setting already available in a system configuration, to be able to overwriting locally the corresponding information.
+
+System and service specific configuration will be be defined in a technology independent format. Therefore any configuration needs to be provided using http://yaml.org[YAML 1.2].
+
+.Non Functional Requirement
+[icon=list-icon-1429.png]
+[NOTE]
+====
+Services needs to provide it's own configuration using YAML files. Security related information should be saved within a secret and not in the config map (like passwords).
+====
+
+=== System configuration
+
+* Database settings
+* Kafaka settings
+* OIDC (OpenID Connect) settings
+
+=== Recommended service settings
+
+* Possibility to overwrite system configuration, database, kafka, OIDC connect, etc.
+* Base path, the root path used for the web application or REST calls.

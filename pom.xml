@@ -1,0 +1,209 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.swisslog</groupId>
+  <artifactId>architectureDocumentation</artifactId>
+  <version>1.0</version>
+  <packaging>jar</packaging>
+  <name>CN Macro Architecture Documentation</name>
+  
+  <description>
+  </description>
+  
+  <properties>
+  		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    	<asciidoctorj.pdf.version>1.5.0-alpha.16</asciidoctorj.pdf.version>
+    	<asciidoctorj.diagram.version>1.5.11</asciidoctorj.diagram.version>
+    	<asciidoctor.maven-plugin.version>1.5.7.1</asciidoctor.maven-plugin.version>
+    	<sourceDirectory>./src/asciidoc</sourceDirectory>
+    	<outputDirectory>target/docs/asciidoc</outputDirectory>
+  	   	<org.sahli.asciidoc.confluence.publisher.version>0.6.0</org.sahli.asciidoc.confluence.publisher.version>
+    	<rootConfluenceUrl>http://10.49.145.139:8090</rootConfluenceUrl>
+    	<confluence.spaceKey>SLSCS</confluence.spaceKey>
+    	<confluence.ancestorId>1081791</confluence.ancestorId>
+    	<confluence.publisherUserName>documentationpublisher</confluence.publisherUserName>
+    	<confluence.publisherPassword>swisslog</confluence.publisherPassword>
+    	<asciidocRootFolder>./src/asciidoc</asciidocRootFolder>
+    	<confluence.publishingStrategy>APPEND_TO_ANCESTOR</confluence.publishingStrategy>
+  </properties>
+  
+  <scm>
+      <connection>scm:git:http://gitlab.swisslog.net:31823/g7heimm/macro-architecture-documentation</connection>
+      <developerConnection>scm:git:http://gitlab.swisslog.net:31823/g7heimm/macro-architecture-documentation</developerConnection>
+      <url>http://gitlab.swisslog.net:31823/g7heimm/macro-architecture-documentation</url>
+  </scm>
+  <ciManagement>
+      <system>jenkins</system>
+      <url>http://cicd.swisslog.net:30658</url>
+  </ciManagement>  
+  
+  
+  <url>http://www.swisslog.com</url>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <id>jar</id>
+                    </execution>
+                </executions>
+                <configuration>
+                      <archive>
+                        <manifestFile>src/main/resources/Manifest.txt</manifestFile>
+                        <manifest>
+                          <addClasspath>true</addClasspath>
+                         
+                          <mainClass>com.footballradar.jpademo.App</mainClass>
+                          
+                        </manifest>
+                      </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>1.4</version>
+                    <executions>
+                        <execution>
+                                <phase>package</phase>
+                                <goals>
+                                        <goal>shade</goal>
+                                </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                            <finalName>${project.artifactId}-${project.version}</finalName>
+                    </configuration>
+            </plugin>
+            <plugin>
+		        <groupId>org.asciidoctor</groupId>
+		        <artifactId>asciidoctor-maven-plugin</artifactId>
+		        <version>${asciidoctor.maven-plugin.version}</version>
+		        <dependencies>
+		        	<dependency>
+		        		<groupId>org.asciidoctor</groupId>
+      					<artifactId>asciidoctorj-diagram</artifactId>
+      					<version>${asciidoctorj.diagram.version}</version>
+		        	</dependency>
+		        	<dependency>
+                        <groupId>org.asciidoctor</groupId>
+                        <artifactId>asciidoctorj-pdf</artifactId>
+                        <version>${asciidoctorj.pdf.version}</version>
+                    </dependency>
+		        </dependencies>
+		        <configuration>
+		        	<sourceDirectory>${sourceDirectory}</sourceDirectory>
+        			<outputDirectory>${outputDirectory}</outputDirectory>
+		        	<attributes>
+		        		<!-- Uses the <img src="data:image/png;base64> syntax for diagrams -->
+		        		<data-uri/>
+		        		<!-- Allows access to remote files (eg. code on external GitHub) -->		        		
+		        		<imagesdir>./images</imagesdir>
+                        <allow-uri-read>true</allow-uri-read>
+		        	</attributes>
+		        	<requires>
+		        		<require>asciidoctor-diagram</require>
+		        	</requires>
+		        </configuration>        
+				<executions>
+                    <!-- execution>
+                        <id>generate-html-doc</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <backend>html5</backend>
+                        </configuration>
+                    </execution>                     
+ 					<execution>
+                        <id>generate-pdf-doc</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <backend>pdf</backend>                    
+                            <sourceHighlighter>coderay</sourceHighlighter>
+                            <attributes>
+                                <icons>font</icons>
+                                <pagenums/>
+                                <toc/>
+                                <idprefix/>
+                                <idseparator>-</idseparator>
+                            </attributes>
+                        </configuration>
+                    </execution-->                    
+                </executions>		        
+		    </plugin>
+		    <!-- mvn org.sahli.asciidoc.confluence.publisher:asciidoc-confluence-publisher-maven-plugin:publish -->
+		    <plugin>
+		    	<groupId>org.sahli.asciidoc.confluence.publisher</groupId>
+		    	<artifactId>asciidoc-confluence-publisher-maven-plugin</artifactId>
+		    	<version>${org.sahli.asciidoc.confluence.publisher.version}</version>
+		    	<configuration>
+			        <asciidocRootFolder>${asciidocRootFolder}</asciidocRootFolder>
+			        <sourceEncoding>UTF-8</sourceEncoding>
+			        <rootConfluenceUrl>${rootConfluenceUrl}</rootConfluenceUrl>
+			        <spaceKey>${confluence.spaceKey}</spaceKey>
+			        <ancestorId>${confluence.ancestorId}</ancestorId>
+			        <username>${confluence.publisherUserName}</username>
+			        <password>${confluence.publisherPassword}</password>
+			        <pageTitlePrefix xml:space="preserve"></pageTitlePrefix>
+			        <publishingStrategy>${confluence.publishingStrategy}</publishingStrategy>
+			        <pageTitleSuffix xml:space="preserve"> [${project.version}]</pageTitleSuffix>
+			        <versionMessage>Version ${project.version}</versionMessage>
+				        <attributes>
+				            <version>${project.version}</version>
+				            <someOtherKey>value</someOtherKey>
+				        </attributes>
+		    	</configuration>
+		    </plugin>
+        </plugins>
+    </build>
+    <repositories>
+	    <!-- repository>
+	      <url>http://download.java.net/maven/2/</url>
+	      <id>hibernate-support</id>
+	      <layout>default</layout>
+	      <name>Repository for library Library[hibernate-support]</name>
+	    </repository-->
+  	</repositories>    
+  	  
+	<distributionManagement>
+    <repository>
+        <id>My_Artifactory_Releases</id>
+        <name>My_Artifactory-releases</name>
+        <url>http://my.maven.repository.internal/artifactory/release</url>
+    </repository>
+    
+    <snapshotRepository>
+        <id>My_Artifactory_Snapshots</id>
+        <name>My_Artifactory-snapshots</name>
+        <url>http://my.maven.repository.internal/artifactory/snapshot</url>
+    </snapshotRepository>
+
+	</distributionManagement>
+
+	<organization>
+		<name>Swisslog </name>
+		<url>www.swisslog.com</url>
+	</organization>
+</project>

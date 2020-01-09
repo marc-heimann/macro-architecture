@@ -1,0 +1,49 @@
+[[etag]]
+== ETag
+
+An ETag (entity tag) is an HTTP response header returned by an HTTP/1.1 compliant web server used to determine change in
+content at a given URL. It can be considered to be the more sophisticated successor to the Last-Modified header. When a
+server returns a representation with an ETag header, the client can use this header in subsequent GETs, in an
+If-None-Match header. If the content has not changed, the server returns 304: Not Modified.
+
+[plantuml, eTagExample1, png]
+....
+hide footbox
+
+"Client" -> "Service": GET /workstations/1
+"Service" -> "Client": WorkstationResource\n(ETag=<font color="red">**1**</font>)
+|||
+"Client" -> "Service": GET /workstations/1\n(if-none-match=<font color="red">**1**</font>)
+"Service" -> "Client": **304: Not Modified**\n(ETag=<font color="red">**1**</font>)
+deactivate "Service"
+....
+
+Furthermore, ETags can be used in combination with the If-Match header to let the server 
+decide whether a resource should be updated. 
+This works by letting a client know that a resource has been updated since the last time they checked. 
+In this case the server returns 412: Precondition Failed.
+
+[plantuml, eTagExample2, png]
+....
+hide footbox
+
+activate "Client 1"
+"Client 1" -> "Service": GET /workstations/1
+"Service" -> "Client 1": WorkstationResource\n(ETag=<font color="red">**1**</font>)
+
+activate "Client 2"
+"Client 2" -> "Service": GET /workstations/1
+"Service" -> "Client 2": WorkstationResource\n(ETag=<font color="red">**1**</font>)
+
+"Client 1" -> "Service": PUT /workstations/1\n(if-match=<font color="red">**1**</font>)
+"Service" -> "Client 1": **200: OK**\n(ETag=<font color="red">*2*</font>)
+deactivate "Client 1"
+
+"Client 2" -> "Service": PUT /workstations/1\n(if-match=<font color="red">**1**</font>)
+"Service" -> "Client 2": **412: Precondition failed**\n(ETag=<font color="red">**1**</font>)
+deactivate "Client 2"
+....
+
+=== Should: Service provide ETag
+
+To avoid re-fetching of resources a service should set ETag in the response header. 

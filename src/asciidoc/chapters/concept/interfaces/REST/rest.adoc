@@ -1,0 +1,12 @@
+:sourcedir: {docdir}/chapters/concept/interfaces/REST/
+include::{sourcedir}general-guidelines.adoc[]
+include::{sourcedir}compatibility.adoc[leveloffset=+1]
+include::{sourcedir}deprecation.adoc[leveloffset=+1]
+include::{sourcedir}json_naming.adoc[leveloffset=+1]
+include::{sourcedir}api_naming.adoc[leveloffset=+1]
+include::{sourcedir}resources.adoc[leveloffset=+1]
+include::{sourcedir}http_requests.adoc[leveloffset=+1]
+include::{sourcedir}http_codes.adoc[leveloffset=+1]
+include::{sourcedir}hateoas.adoc[leveloffset=+1]
+include::{sourcedir}etag.adoc[leveloffset=+1]
+include::{sourcedir}pagination.adoc[leveloffset=+1]

@@ -1,0 +1,32 @@
+== Include Web Component Concept
+
+The main advantage of Web Components is the ability of creating custom elements that can be reused on any web page. This use case is covered by the custom element specification of Web Components. When a plain custom element would be included, the style parameters of the outer document can affect the appearance of the included element and vice versa, an effect that is annoying in most use cases. To prevent this styling influence, a shadow DOM can be set up to encapsulate the styling of the Web Component and stop the styling parameters from manipulating other content. Therefore, the shadow DOM specification is crucial to our context, too. With these tow concepts in mind, one can include custom HTML Content into other web pages in a coherent way.
+
+=== Scenario for including a Web Component
+Assume we have a service A that wants to display some content offered by another service B on its web page together with other payload. Additionally, we do not want to share backend data between the two services, because of security issues, data type incompabilities or some other reasons. What we actually need in this situation is a UI snippet, prepared by service B, that can directly be included to the web page content of service A. This can be done with Web Components. We will now sketch the concept for setting up the two services properly.
+
+At first, service B must define the content to share within a Javascript file. This Javascript file contains:
+
+* A class extending "HTMLElement" with a shadow DOM that contains HTML code and styling for the UI snippet to share
+* A definition of a new custom element with a name declaration bound to the global document
+* Optional functions and methods to define the behaviour of the custom element
+
+This Javascript file, together with the name of the custom element, will be sent to service A. To include its content to the UI, Service A must do the following:
+
+. Attach the Javascript file to its current web page, so it is executed
+. Insert HTML tags using the custom element name that was sent by service B, so the content is displayed on the desired place in the UI
+
+Now, the UI of service A will display the content offered by service B without any styling influences from and to the included component, and without the need of transferring any backend data.
+
+=== Transclusion with Web Components
+The scenario above can be interpreted as a transclusion scenario, where content of service B is transcluded to the content page of service A. In this way, the concept for including Web Components can be used for transclusion, too. For more details on the transclusion concept, see Transclusion Concept.
+
+For testing this idea of transclusion via Web Components, a Supervisor prototype for Self Contained Systems is under development. More Information can be found at Team 1 - Prototype.
+
+=== Limitations
+==== Browser compability
+
+The Web Component standard is not supported by Firefox and Edge at this time. Due to this, a document that uses Web Components will not be rendered properly within these browsers. At the Moment, Mozilla and Microsoft are working on a support for the Web Component Standard for their Browsers, the current status can be viewed at http://webcomponents.org. As long as the updates are in development, a workaround using Polyfills can be used to get web components running on all common browsers. A common library that uses polyfills is Polymer.
+
+==== Including different library versions
+As the shadow DOM is meant to encapsulate styles, it is not possible to encapsulate scripts or links inside a Web Component. For example, if a Web Component includes a different JQuery library version than the outer page, then the last loaded library will be used for the whole document. Protecting libraries from overriding each other cannot be fixed using a shadow DOM.

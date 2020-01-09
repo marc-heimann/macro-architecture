@@ -1,0 +1,54 @@
+[[hateoas]]
+== HATEOAS
+
+=== Must: Use REST Maturity Level 3 - HATEOAS
+
+Each Self Contained System provides access to its resources via https://martinfowler.com/articles/richardsonMaturityModel.html[[underline]#RESTful API Level 3#] which is referred by the HATEOAS acronym.
+
+HATEOAS (Hypermedia as the Engine of Application State) is a https://en.wikipedia.org/wiki/HATEOAS[[underline]#constraint of the REST application architecture#].
+A hypermedia-driven site provides information to navigate the site’s REST interfaces dynamically by including hypermedia links with the responses.
+
+
+=== Must: HATEOAS according the HAL specification
+
+The Self Contained Systems realize HATEOAS according the http://stateless.co/hal_specification.html[[underline]#HAL#] specification (HAL+JSON).
+
+=== Must: Client discovers resources via links
+
+Client have to follow the links and are not allowed to take shortcuts by directly target resources without 'discovering' them.
+
+=== Must: Provide root entry point for discovery
+
+To allow discoverability of resources by clients,
+provide a resource via the root entry point (`/api`) with links to all public resources.
+
+Example response for: `http://localhost:8080/bag-unloader/api`
+
+[source,JavaScript]
+----
+{
+  "_links": {
+    "self": {
+      "href": "http://localhost:8080/bag-unloader/api"
+    },
+    "packages": {
+      "href": "http://localhost:8080/bag-unloader/api/packages"
+    },
+    "workstations": {
+      "href": "http://localhost:8080/bag-unloader/api/workstations"
+    }
+  }
+}
+----
+
+=== Must: Use full, absolute URI
+
+Links to other resource must always use full, absolute URI.
+
+**Motiviation**: Exposing any form of relative URI (no matter if the relative URI uses 
+an absolute or relative path) introduces avoidable client side complexity. 
+It also requires clarity on the base URI, which might not be given when using features like embedding sub-resources.
+
+
+
+

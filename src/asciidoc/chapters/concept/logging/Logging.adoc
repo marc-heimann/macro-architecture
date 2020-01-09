@@ -1,0 +1,197 @@
+== Logging
+.Non Functional Requirement
+[icon=list-icon-1429.png]
+[NOTE]
+====
+* Each service should provide the logging as *structured logging*
+* The log output should be *JSON* formatted, defined by the *log-schema.json*
+* The log entries has to be written to normal *console log* of the application
+* The log should provide as much information as needed to make the log entry self explanatory
+====
+
+.log-schema.json
+[source,json]
+----
+{
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "@timestamp": {
+      "$id": "/properties/@timestamp",
+      "type": "string",
+      "title": "The @timestamp Schema ",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        "2018-06-05T07:59:48.888+0200"
+      ]
+    },
+    "@sourceHost": {
+      "$id": "/properties/@sourceHost",
+      "type": "string",
+      "title": "The @sourcehost Schema ",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        "vi200787"
+      ]
+    },
+    "@fields": {
+      "$id": "/properties/@fields",
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "$id": "/properties/@fields/properties/timestamp",
+          "type": "integer",
+          "title": "The Timestamp Schema ",
+          "description": "An explanation about the purpose of this instance.",
+          "default": 0,
+          "examples": [
+            1528178388888
+          ]
+        },
+        "thread": {
+          "$id": "/properties/@fields/properties/thread",
+          "type": "string",
+          "title": "The Thread Schema ",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "XNIO-3 task-2"
+          ]
+        },
+        "threadId": {
+          "$id": "/properties/@fields/properties/threadId",
+          "type": "integer",
+          "title": "The Threadid Schema ",
+          "description": "An explanation about the purpose of this instance.",
+          "default": 0,
+          "examples": [
+            114
+          ]
+        },
+        "level": {
+          "$id": "/properties/@fields/properties/level",
+          "type": "string",
+          "title": "The Level Schema ",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "INFO"
+          ]
+        }
+      }
+    },
+    "@logger": {
+      "$id": "/properties/@logger",
+      "type": "string",
+      "title": "The @logger Schema ",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        "com.swisslog.bagsorter.unloader.boundary.controller.WorkstationController"
+      ]
+    },
+    "@source": {
+      "$id": "/properties/@source",
+      "type": "object",
+      "properties": {
+        "file": {
+          "$id": "/properties/@source/properties/file",
+          "type": "string",
+          "title": "The File Schema ",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "WorkstationController.java"
+          ]
+        },
+        "class": {
+          "$id": "/properties/@source/properties/class",
+          "type": "string",
+          "title": "The Class Schema ",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "com.swisslog.bagsorter.unloader.boundary.controller.WorkstationController"
+          ]
+        },
+        "method": {
+          "$id": "/properties/@source/properties/method",
+          "type": "string",
+          "title": "The Method Schema ",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "getWorkstation"
+          ]
+        },
+        "line": {
+          "$id": "/properties/@source/properties/line",
+          "type": "integer",
+          "title": "The Line Schema ",
+          "description": "An explanation about the purpose of this instance.",
+          "default": 0,
+          "examples": [
+            60
+          ]
+        }
+      }
+    },
+    "@message": {
+      "$id": "/properties/@message",
+      "type": "string",
+      "title": "The @message Schema ",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        "Get by workstationId=1"
+      ]
+    },
+    "@parameters": {
+      "$id": "/properties/@parameters",
+      "type": "object",
+      "properties": {
+        "workstationId": {
+          "$id": "/properties/@parameters/properties/workstationId",
+          "type": "string",
+          "title": "The Workstationid Schema ",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "1"
+          ]
+        }
+      }
+    }
+  }
+}
+----
+
+.Example log entry
+[source, json]
+----
+{
+    "@timestamp": "2018-06-05T07:59:48.888+0200",
+    "@sourceHost": "vi200787",       
+    "@fields": {
+        "timestamp": 1528178388888,                  
+        "thread": "XNIO-3 task-2",
+        "threadId": 114,
+        "level": "INFO"
+    },
+    "@logger": "com.swisslog.bagsorter.unloader.boundary.controller.WorkstationController",
+    "@source": {                      
+        "file": "WorkstationController.java",
+        "class": "com.swisslog.bagsorter.unloader.boundary.controller.WorkstationController",
+        "method": "getWorkstation",
+        "line": 60    
+    },      
+    "@message": "Get by workstationId = 1",
+    "@parameters": {                     
+        "workstationId": "1"    
+    }
+}
+----

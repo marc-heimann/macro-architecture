@@ -1,0 +1,55 @@
+[[http_codes]]
+== HTTP Status Codes
+
+=== Must: Use Standard HTTP Status Codes
+
+NOTE: You must only use standardized HTTP status codes and consistently with their intended semantics. 
+You must not invent new HTTP status codes.
+
+RFC standards define ~60 different HTTP status codes with specific semantics
+(mainly https://tools.ietf.org/html/rfc7231#section-6[RFC7231] and
+https://tools.ietf.org/html/rfc6585[RFC-6585]) -- and there are upcoming
+new ones, e.g. https://tools.ietf.org/html/draft-tbray-http-legally-restricted-status-05[draft legally-restricted-status]. 
+See overview on all error codes on
+https://en.wikipedia.org/wiki/List_of_HTTP_status_codes[Wikipedia] or
+via https://httpstatuses.com/[https://httpstatuses.com/] also inculding 'unofficial codes', e.g. used
+by popular web servers like Nginx.
+
+Below we listed the most commonly used and best understood HTTP status codes (consistent with RFC standard). 
+You may use HTTP status codes not listed here, but in this case you must provide clear documentation in the API definition.
+As long as there is no need to use codes not listed here, 
+you should not describe HTTP status codes to avoid risk of inconsistent definitions and 
+reduced readability due to overload with common sense information.
+
+List of commonly aggreed and best understood HTTP status codes:
+
+.Success Codes
+|====
+| Code | Meaning | Methods
+| 200 | *OK* - this is the standard success response | All
+| 204 | *No content* - There is no response body | PUT, DELETE, PATCH
+|====
+
+.Redirection Codes
+|====
+| Code | Meaning | Methods
+| 304 | *Not Modified* - resource has not been modified since the date or 
+version passed via request headers If-Modified-Since or If-None-Match. Needed for **"E-Tag" ** usage. | GET
+|====
+
+.Client Side Error Codes
+|====
+| Code | Meaning | Methods
+| 400 | *Bad request* - generic / unknown error | All
+| 401 | *Unauthorized* - the user must log in (this often means “Unauthenticated”) before usage (TODO Discuss with Matthias) | All
+| 403 | *Forbidden* - the user is not authorized to use this resource (e.g. missing access right) (TODO Discuss with Matthias) | All
+| 404 | *Not found* - the resource is not found | All
+|====
+
+.Server Side Error Codes
+|====
+| Code | Meaning | Methods
+| 500 | *Internal Server Error* - a generic error indication for an unexpected server execution problem (here, client retry may be sensible) | All
+|====
+
+NOTE: All technical errors on server side should be converted to "Internal Server Error"

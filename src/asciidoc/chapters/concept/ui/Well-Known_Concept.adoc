@@ -1,0 +1,85 @@
+== Well-Known Concept
+
+Before making a request to a website, web protocols are increasingly requiring the discovery of what’s called “site-wide” metadata.
+
+This metadata essentially provides policy or other information relating to a specific site. The well-known path prefix is used for that type of information to be stored so that it is easily consumable.
+
+=== What Is the well-known Path Prefix?
+The well-known path prefix is essentially a place where you should store information about a site that is expected to be at the same location on every website or in our case on every service.
+
+The /.well-known/ folder needs to be accessible for everybody to read from at any time. 
+
+.The well known prefix is defined as follows
+[source]
+----
+/.well-known/
+----
+
+What should be included after the well-known prefix is defined in the following registry (more details on this below). Therefore, if your website has a URI for acme-challenge, where 'ACME' stands for Automated Certificate Management Environment, then according to the registry, this URI should be defined within the well-known path prefix like shown in the info box above.
+
+Therefore, if your website has a URI for acme-challenge, then according to the registry, this URI should be defined within the well-known path prefix as follows
+[source]
+----
+/.well-known/acme-challenge
+----
+
+=== Using well-know URIs
+If you have resources that are included within the well-known registry, then you should move them to live within the well-known path prefix.
+
+.As specified in
+NOTE: https://tools.ietf.org/html/rfc5785[RFC 5785]
+
+=== Using well-known URIs within the macro architecture
+
+In our context, a user might wish to see information managed by different Self Contained Systems on one screen, or change between views easily. Therefore, every Self Contained System will offer metadata about how to display or load the different screens collected in a folder that is known within the macro architecture. We choose the well-known URI for this purpose using the subfolders and data schemes described below. This usage of the well-known path prefix is conceptually not clean, as the used subdirectories are not included in the well-known registry and the metadata are meant to be used by other Self Contained Systems within the macro architecture context only. However, the well-known directory offers a convenient location for all metadata to use all services from any other point of the system, with public access and without security.
+
+NOTE: The list of metadata to be contained in the well-known folder is work in progress. Therefore, the concept is not ready to be used within the Self Contained System context by now!
+
+=== Supervisor Screens
+If your service provides supervisor screens, the specific screens needs to be provided within a metadata file called:
+
+[source]
+/.well-known/supervisor-screens
+
+The information within such a file will be provided in a structured format using JSON.
+
+A JSON Array should be provided where every entry represents one supervisor screen. For every screen, the following metadata must be provided:
+
+* customElementName: The identifier used for HTML tags to create the screen.
+* attributes: A JSON list of HTML attributes that are specific to this custom element.
+* title: The name of the supervisor screen in natural language.
+* javascriptRelativePath: The location of the Javascript file containing the custom HTML element. This path is relative to the source folder of the Self Contained System.
+
+
+=== Operator Station Screens
+In case, your service provides one or more operator station screens, the url of the screens are defined in a metadata file called:
+
+[source]
+/.well-known/operator-screens
+
+Here counts the same as previously describes that the information within this file is being defined in a structured way using JSON format.
+
+A JSON Array should be provided where every entry represents one operator screen. For every screen, the following metadata must be provided:
+
+* customElementName: The identifier used for HTML tags to create the screen.
+* title: The name of the operator screen in natural language.
+* javascriptRelativePath: The location of the Javascript file containing the custom HTML element. This path is relative to the * source folder of the Self Contained System.
+
+
+==== Dashboard Widgets
+Some of the services will additionally provide a dashboard widget that can be arbitrarily integrated in various dashboards. If your service provides on or even more dashboard widgets these widgets are defined in a metadata file called:
+
+[source]
+/.well-known/dashboard-widgets
+
+The metadata for dashboards is structured in JSON Format, too.
+
+A JSON Array should be provided where every entry represents one dashboard widget. For every screen, the following metadata must be provided:
+
+* customElementName: The identifier used for HTML tags to create the screen.
+* attributes: A JSON list of HTML attributes that are specific to this custom element.
+* title: The name of the supervisor screen in natural language.
+* javascriptRelativePath: The location of the Javascript file containing the custom HTML element. This path is relative to the source folder of the Self Contained System.
+
+==== Kubernetes Readiness Probe
+Because the /.well-known/ folder is accessible for everybody, this directory is a good candidate to become target for the Kubernetes readiness probe which is neccessary to give Kubernetes the opportunity to check whether a service is alive or not. Further Information on Kubernetes readiness probe can be found at Liveness / Readiness Probe.

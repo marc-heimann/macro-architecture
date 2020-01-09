@@ -1,0 +1,41 @@
+[[deprecation]]
+== Deprecation
+
+Sometimes it is necessary to phase out an API endpoint (or version), 
+for instance, if a field is no longer supported in the result 
+or a whole business functionality behind an endpoint has to be shut down. 
+There are many other reasons as well. 
+As long as these endpoints are still used by consumers these are breaking changes and not allowed. 
+Deprecation rules have to be applied to make sure that necessary consumer changes 
+are aligned and deprecated endpoints are not used before API changes are deployed.
+
+NOTE: Clients are not allowed to start using deprecated parts of an API.
+
+=== Must: Obtain Approval of Clients
+
+Before shutting down an API (or version of an API) the producer must make sure, 
+that all clients have given their consent to shut down the endpoint. 
+Producers should help consumers to migrate to a potential new endpoint (i.e. by providing a migration manual). 
+After all clients are migrated, the producer may shut down the deprecated API.
+
+=== Must: Client Services must Agree on Deprecation Timespan
+
+If the API is consumed by any client, 
+the producer must define a reasonable timespan that the API will be maintained after the producer has announced deprecation. 
+The client must agree to this minimum after-deprecation-lifespan before he starts using the API.
+
+To prevent having to rely solely on inter-team communication, to-be deprecated APIs must include a 'Sunset header' in their responses, specifying the planned or agreed shutdown date. Clients will be able to monitor for this header which provides an extra measure for preventing unexpected API shutdowns.
+
+Example:
+
+----
+Sunset: Tue, 1 Jan 2020 12:59:00 GMT
+----
+
+=== Must: Monitor Usage of Deprecated APIs
+
+Owners of APIs used in production must monitor usage of deprecated APIs until 
+the API can be shut down in order to align deprecation and avoid uncontrolled breaking effects.
+
+Clients of APIs used in production must monitor consumed endpoints for future deprecation by looking for the 'Sunset header' in responses. This prevents unexpected API shutdowns.
+

@@ -1,0 +1,67 @@
+== Versioning and Naming
+
+To keep everything manageable, all images should be named, versioned and labled by the same conventions.
+All services which are build at Swisslog should rely on the following naming and versioning schema:
+
+[source]
+----
+DOCKER_REGISTRY_NAME:PORT/sl/TYPE[/VARIANT]:MAJOR.MINOR.BUGFIX
+----
+
+=== Docker container naming
+
+Meaning of the single parts
+
+[width="100%",options="header",cols="1,3,4,3"]
+|====================
+|Required | Variable  | Description  | Example  
+| X | DOCKER_REGISTRY_NAME | The DNS-name of the docker-registry, the image is deployed to | devstore.swisslog.com 
+| X | PORT | The port, under which the registry can be found | 6556 
+| X | TYPE | The name of the service itself. Which type of Self Contained System is this? | stock-supplier  
+|   | VARIANT | If there are different variants of one Self Contained System, this parameter can be set to identify those. |  pocket-loading/manual vs. pocket-loading/robot
+|====================
+
+To save some space and keep the name straightforward, only a abbrevation (__sl__) for Swisslog is used.
+
+IMPORTANT: The whole name will be in lowercase with hyphens as delimiter within the context of one variable.
+
+==== Examples
+
+
+[width="100%",options="header"]
+|====================
+| Example | Explanation
+| <DockerRegistryURL>:6556/sl/unloading |  This is the image name for the unloading service.
+| <DockerRegistryURL>:6556/sl/keycloak | This is the image name for a keycloak service. 
+| <DockerRegistryURL>:6556/sl/packer/big-planes <DockerRegistryURL>:6556/sl/packer/small-planes | This is a packer service, which has two variants, one especially for big planes, another one for small planes  
+| <DockerRegistryURL>:6556/sl/consignment-planner | A consignment-service
+|====================
+
+=== Docker container versioning
+.Version release schema:
+[source]
+----
+ x.y.z-t.bn
+----
+
+.Version snapshot schema:
+[source]
+---- 
+ x.y.z-SNAPSHOT-t.bn
+----
+
+Schema description:
+[width="100%",options="header", cols="1,1,5"]
+|====================
+| Digit | Variable | Explanation
+| x | Major Version | when you make big workflow changes or add additional features to this service, which effects the customer
+| y | Minor Version | when you add functionality in a backwards-compatible manner or you fulfill a change request from the customer. The POs define specific milestones at which versions are released and the number is increased. This will basically group several sprints under one milestone (Might be 1 or 2 sprints or even more).
+| z | Bugfix | when you make a backwards-compatible bug fixes release
+| SNAPSHOT | Snapshot release | In case the release is still a snapshot, the snapshot suffix will be added after the bugfix version
+| t | Timestamp | Timestamp in format "YYYYmmDDHHMM"
+| bn | Buildnumber | Integer which will be increased for every push
+|====================
+
+* after each finished story please make a develop-t.bn release
+* start version for each service will be =>  0.1.0-201801012000.1
+* at the moment when the product owner decides to have a first ready version, which can be brought into production switch to version 1.0.0-202501012000.1

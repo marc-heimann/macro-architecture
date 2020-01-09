@@ -1,0 +1,102 @@
+[[events]]
+== Events
+
+The architecture centers around decoupled Self Contained Systems and in that context we favour asynchronous event driven approaches.
+The guidelines in this section focus upon how to design and publish events intended to be shared for others to consume.
+The events are published as json on the kafka message bus.
+
+
+=== Must: Treat Events as part of the service interface
+
+Events are part of a service’s interface to the outside world equivalent in standing to a service’s REST API.
+Services publishing data for integration must treat their events as a first class design concern, just as they would an API.
+
+This includes especially <<json_naming, JSON Naming>>, <<date_format, date format>>
+and backwards <<compatibility, compatibility>>.
+
+
+=== Must: Follow event schema
+
+The event must follow the event schema:
+
+[source,JavaScript]
+----
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Event definition",
+  "description": "Event of any type which is produced by any service.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "version",
+    "source",
+    "id",
+    "timestamp",
+    "payload"
+  ],
+  "properties": {
+    "name": {
+      "description": "The name of the event (Required)",
+      "examples": [
+        "74738ff5-5367-5958-9aee-98fffdcd1876"
+      ],
+      "type": "string"
+    },
+    "version": {
+      "description": "The version of the event (Required)",
+      "examples": [
+        "1.0"
+      ],
+      "type": "string"
+    },
+    "id": {
+      "description": "The id of the event. Based on UUID definition (Required)",
+      "examples": [
+        "74738ff5-5367-5958-9aee-98fffdcd1876"
+      ],
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "timestamp": {
+      "description": "Time when the event is created on the producer part, according to ISO8601, UTC-based (Required)",
+      "examples": [
+        "2018-03-30T14:24:52.793Z"
+      ],
+      "type": "string",
+      "format": "date-time"
+    },
+    "source": {
+      "description": "The name of the sender of the event (Optional)",
+      "examples": [
+        "unloader-service"
+      ],
+      "type": "string"
+    },
+    "payload": {
+      "type": "object",
+      "description": "The actaul payload of the event. Contains the context specific values of an event"
+    }
+  }
+}
+----
+
+
+Example of an event:
+
+[source,JavaScript]
+----
+{
+  "name": "FooEvent",
+  "id": "74738ff5-5367-5958-9aee-98fffdcd1876",
+  "version": "1.0",
+  "timestamp": "2018-03-30T14:24:52.793Z",
+  "source": "unloader-service",
+
+  "payload": {
+    "fooValue": "42",
+    "barValue": "someValue"
+  }
+}
+----

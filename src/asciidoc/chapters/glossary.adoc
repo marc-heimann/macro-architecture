@@ -1,0 +1,129 @@
+[[section-glossary]]
+== Glossary
+This glossary should harmonize and standardize our technical/functional terms to one common language for all regions (CE, GE, APAC, US). For a better overview, the glossary is splitted up into two sections, technical and functional terms.
+
+=== Technical Terms
+
+[options="header" cols="2"]
+|===
+| Term
+| Definition
+
+| Self Contained System Architecture     
+| The Self Contained System architectural style is an approach to developing a single application as a suite of small services, each running in its own process and communicating with lightweight mechanisms, often an HTTP resource API. These services are built around business capabilities and independently deployable by fully automated deployment machinery. There is a bare minimum of centralized management of these services, which may be written in different programming languages and use different data storage technologies.
+
+| Self Contained System     
+| A Self Contained System is a isolated and more understandable piece of a complex system. Self Contained Systems are "scoped/sliced" from business perspective and not from technical perspective.
+
+| SCS    
+| Self Contained System
+
+| REST    
+| Representational state transfer (REST)
+
+| HATEOS    
+| Hypermedia As The Engine Of Application State
+
+| Event driven architecture     
+| All services publishes an event whenever a service update its data. Other services subscribe to these events, if interested. When an event is received, a service updates its data.
+
+| Event sourcing     
+| Event sourcing persists the state of a business entity such an Order or a Customer as a sequence of state-changing events. Whenever the state of a business entity changes, a new event is appended to the list of events. Since saving an event is a single operation, it is inherently atomic. The application reconstructs an entity’s current state by replaying the events.
+
+| Event     
+| An event in our case means a immutable business fact that happened in the system. Events are not allowed to express implementation details to keep events valid from one implementation variant of a SCS to another. 
+ 
+| Event store     
+| A event store is a database of events. The store has an API for adding and retrieving any entity’s events. The event store also behaves like a message broker. It provides an API that enables services to subscribe to events. When a service saves an event in the event store, it is delivered to all interested subscribers.
+
+| Polyglot Persistence     
+| A persistence layer should be selected by its use case and the issue that a team is going to solve. It might happen that a team that owns a service which has to deal with location structures, requests the usage of a Graph DB (like neo4j) because it makes hardly sense to store this kind of data in a relational way.  
+
+| CQRS     
+| Command Query Responsibility Segregation
+
+| Continuous Integration 
+| Continuous Integration focuses code integration and validation via unit tests, and optionally integration tests.
+
+| Continuous Delivery 
+| Continuous Delivery is step after Continuous Integration.
+
+| Continuous Deployment 
+| The difference between Continuous Delivery and Continuous Delivery is, that every build results in an automatic deployment into production.
+
+|OIDC 
+| https://openid.net[OpenID Connect], represent a protocoll for web authentication and authorization.
+
+|YAML or YML 
+| http://yaml.org[YAML 1.2], format used for configuration files.
+|===
+
+=== Functional (Logistical) Terms
+
+This glossary contains the business terms, which are identified within the context. At the moment it only contains some examples and must be filled with terms.
+
+[options="header" cols="2"]
+|===
+| Term 
+| Definition
+
+| Receiving 
+| TBD
+
+| Storage and Retrieval 
+| TBD
+
+| Consolidation 
+| TBD
+
+| Shipping 
+| TBD
+|===
+
+=== Links For Further Reading
+
+For understanding the whole concept and some of the mentioned buzzwords in detail, here are some web-resources, it is recommended to read them, to get a better insight of how everything is working.
+
+.Self Contained Systems In General
+* https://en.wikipedia.org/wiki/microservices[Wikipedia]
+* https://martinfowler.com/articles/microservices.html[Article by Martin Fowler]
+* https://leanpub.com/microservices-primer/read[Self Contained Systems (primer) - by Eberhard Wolff]
+* https://github.com/ewolff/microservice[Self Contained Systems (example) - by Eberhard Wolff using Docker, Spring, and Spring Cloud]
+* https://vikipedia.Swisslog.com/download/attachments/396591576/SplitIntoMicroservices.pdf?version=2&modificationDate=1481185058000&api=v2[Split into Self Contained Systems]
+* http://microservices.io/[]
+* http://www.microservices.io/patterns/microservices.html[]
+* https://www.heise.de/developer/artikel/Code-Lieber-Redundanz-oder-lieber-Reuse-2795996.html[Code: Lieber Redundanz oder lieber Reuse]
+
+.Self-Contained System
+* http://scs-architecture.org/[]
+
+.Event Driven Architecture
+* http://microservices.io/patterns/data/event-driven-architecture.html[Pattern]
+
+.Event Sourcing
+* http://microservices.io/patterns/data/event-sourcing.html[Event Sourcing Pattern]
+* https://www.infoq.com/articles/microservices-aggregates-events-cqrs-part-1-richardson[]
+* https://www.infoq.com/articles/microservices-aggregates-events-cqrs-part-2-richardson[]
+* https://github.com/eventuate-local/eventuate-local[Eventuate GitHub]
+
+.REST
+* https://en.wikipedia.org/wiki/Representational_state_transfer[Wikipedia]
+* https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm[Original Disertation which defines Rest]
+* http://roy.gbiv.com/untangled/2008/rest-apis-must-be-hypertext-driven[Rest API's must be hypertext-driven]
+* https://martinfowler.com/articles/richardsonMaturityModel.html[Richardson Maturity Model]
+* https://en.wikipedia.org/wiki/HATEOAS[HATEOAS]
+
+.Database
+* https://vikipedia.swisslog.com/download/attachments/396591576/DataArchitectureNotJustForMicroservices.pdf?version=2&modificationDate=1481184955000&api=v2[Data Architecture Not Just For Self Contained Systems]
+* https://www.innoq.com/de/blog/thoughts-on-a-canonical-data-model/[Why you should avoid a canonical data model]
+* http://microservices.io/patterns/data/database-per-service.html[]
+* http://microservices.io/patterns/data/cqrs.html[CQRS]
+* https://en.wikipedia.org/wiki/Polyglot_persistence[Polyglot Persistence]
+* https://www.slideshare.net/chris.e.richardson/developing-eventdriven-Self Contained Systems-with-event-sourcing-and-cqrs-svcc-svcc2015[]
+
+.UI
+* link:https://www.innoq.com/de/podcast/025-scs-frontend-integration/[Self-contained Systems und Frontend-Integration Part 1]
+* link:https://www.innoq.com/de/podcast/026-scs-frontend-integration-teil-2/[Self-contained Systems und Frontend-Integration Part 2]
+
+.The Differences between Continuous Integration, Continuous Delivery And Continuous Deployment
+* link:https://www.scrum.de/unterschiede-zwischen-continuous-integration-continuous-delivery-und-continuous-deployment/[CI, CD and CD]

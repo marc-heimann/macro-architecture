@@ -1,0 +1,112 @@
+[[section-architecture-constraints]]
+== Architecture Constraints
+Some decisions have already been made in macro architecture that limit the freedom of architectural design. 
+Those limits are described in this section. 
+Please also have a look at  <<solution_strategy_and_concepts.adoc#section-concepts,Chapter 8>> where additional concepts are presented. 
+The technology stack, which should and will be used is displayed in the figure below.
+
+image::../../technology-stack.png[Technology Stack]
+
+=== Platform Independence
+The architecture is designed to be widely independent from operating systems or specific runtime environments.
+Therefore the architecture uses technologies that are able to run on each environment. 
+The running software should not depend on a special platform. It should be possible to run the software in the private- or public-cloud or on every customer device. 
+To achieve this goal, the software is to be delivered within a software container.
+
+=== Vendor Independence
+The delivered software should not depend on any vendor. Vedor specific technologies (like cloud services from AWS or Azure) are prohibited to be used.
+Please be aware of this, when choosing technologies to use.
+
+=== Containerization
+Every delivered software should run within a container. Those containers are mainly based upon Linux distributions, therefore not every "Windows"-technology can be used within a container.
+
+=== Scalability
+All applications should be scalable. Therefore every service must be designed to be scalable, please be aware of this, when designing a new Self Contained System.
+
+=== Availability
+The built system needsd to be designed in a way that it becomes more available compared to a classical system. Therefore it is necessary, that all advantages of a container orchestration solution is being used. 
+
+=== Stateless
+To fulfill the requirements that cloud computing brings with it, it is necessary to design the various SCS in a stateless way. Goal is to enable other instances of the same SCS to take over the process that failed within one previous instance.
+
+=== Self contained system
+The Self-contained System (SCS) approach is an architecture that focuses on a separation of the functionality into many independent systems, making the complete logical system a collaboration of many smaller software systems. This avoids the problem of large monoliths that grow constantly and eventually become unmaintainable. Over the past few years, we have seen its benefits in many mid-sized and large-scale projects.
+
+=== Resilience 
+Even though SCS architecture isolates failures through defined boundaries, there is a high chance of network, hardware, database, or application issues, which will lead to the temporary unavailability of a component. To avoid or minimize this kind of outage, we have to build a fault tolerance mechanism. Nowadays, we have an easier way to build fault tolerance with the help of Spring Boot components, Hystrix, Resilience 4j libraries, etc.
+The most often used concepts to gain resilience are:
+
+* *Retry*
+
+	Retry provides the ability to invoke failed operations, which is very helpful when errors are transient in nature. It will retry the failed operation for configured times and then proceed to the fallback (recovery) to return the data from the cache or the default value. Mainly in service to a service call, service B will not respond due to high load at that time, and it will be available to communicate after few seconds. In this case, retry will be helpful in getting the results.
+  
+* *Circuit Breakers*
+  
+	We normally use time-outs to limit the duration of operations which will prevent hanging of an operation. But most of us are not able to predict the perfect timeout which will be suitable for all the operations in this dynamic environment, so it is called an anti-pattern.
+	Circuit breakers came to deal with the above problems and are very helpful in a distributed systems where repetitive failures can bring down the whole system down. Let us consider that the circuit is closed and service-to-service calls happen successfully. If any service throws an error of a particular type continuously over a short period, then the circuit breaker will open the connections so that no service can communicate with that one unless it becomes stable. One more important thing is to remember is that not all errors will trigger the circuit breaker.
+	There is also a concept called a half-open state, in which a service can send the first request to check the status, and if it is a success, then it will form a closed circuit, and otherwise, it will be left open.
+
+* *Rate Limiters*
+
+	This is the technique of defining how many requests can be received or processed by an application or customer during the time intervals. With the help of a rate limiter, we can learn the number of requests by a customer and protect the service from overloading by stopping the request until the application load balancer comes into the picture to scale an instance. We can also hold low-priority tasks to give enough resources to high-priority tasks.
+	In a scenario where one of your users has a misbehaving script which is accidentally sending you a lot of requests or one of your users is intentionally trying to overwhelm your servers, a rate limiter is very helpful.
+	Spring Boot doesn't have a rate limiter module and we should provide the custom implementation with the help of Interceptors.
+	The Resilience-4j library supports this feature.
+	
+* *Bulkheads*
+
+	Bulkheads are used to avoid faults in one part of a system taking the entire system down by limiting the number of concurrent calls to a component. It is mainly used to segregate resources.
+	Say there is an application which has two components. If the requests to component 1 start hanging, it will result in all threads hanging. To avoid this, bulkheads will separate the number of threads and only threads allocated to component 1 will hang; others will be there to process component 2's requests.	
+	The Resilience-4j library and Hystrix support this feature.
+	
+* *Correlation Id and Log Aggregator*
+
+	These will be more helpful mainly in debugging SCS architecture. Let's say service A is communicating with service B and how we can identify the flow of a request from A to B in logs. Correlation Id will be helpful in the trace of the request in a flow of different SCSs.
+	Spring doesn't provide an implementation for correlation id. We can provide our own implementation to generate the correlation id and pass it to downstream services without being invasive into the code.
+	Create the class which implements the filter to filter all the requests and check whether the request header has the correlation id. If the correlation id is not there, it will generate and set the thread local. For the service to a service call, pass the correlation id as part of the header. Don't forget to unset the thread local on completion of a request.
+	The Log Aggregator will aggregate all the logs from different microservices, which makes them searchable together. 
+	LogStash with Kibana are open-source tools which allow us to aggregate logs into one location, and Kibana allows us to search log files.
+	We can use the ChaosMonkey resiliency tool to test failure scenario.
+
+=== Automated CI/CD
+The growth of agile and the demand it’s placing on QA teams for faster delivery cycles is forcing many to replace their older, monolithic development models with a more streamlined process. However, pervasive methods, such as manual testing, are keeping teams from adopting flexible practices like continuous integration or continuous delivery and reaching true agility.
+The goal of the continuous integration and continuous delivery (CI/CD) pipeline is to enable teams to release a constant flow of software updates into production to quicken release cycles, lower costs, and reduce the risks associated with development.
+
+==== CI/CD cycle and possible tools.
+image::../../Continuous Integration and Deployment.png[Continuous Integration and Deployment]
+
+==== Testing responsibilites and involved clusters.
+image::../../CI%2FCD and Testing with Kube clusters overview.png[CI%2FCD and Testing with Kube clusters overview]
+
+=== Independent manageability
+The primary driver to chose for a Cloud Computing approach with SCSs is to increase the speed in that our software can be implemented, as requested directly from the business.
+However, there is also an emphasis on safety, through independent deployability and testability, as well as future proofing through composability.
+By embracing SCSs, you are able to overcome e.g. the issue of unmanageable sourcecode because of its huge amount of code lines.
+
+=== Replaceability of components
+The architecture style of SCS architecture aims for a reusability of once written software components by building replaceable components. 
+However, replaceability of components is being achieved by the useage of Domain Driven Design which leads to business driven interfaces that are stable over various version of an evolving software system. 
+Goal is to simply drag and drop solutions together without the need of a late integration on-site.
+
+=== Central/Structural Logging
+A major challenge in a distributed system (e.g. a system landscape of Self Contained Systems) is to understand what is going on and even more importantly what is going wrong, where and why?. Therefore we want to achieve a centralized and unified logging. We want to aggregate all log events from all Self Contained Systems in a centralized data store for analysis and visualization.
+
+image::../../logfile_collection_kibana.png[caption="Logfile collection with Elastic Stack", Logfile collection with Kibana]
+
+=== Central/Immutable Configuration
+TODO
+
+=== Pull-over-Push
+
+* Pull technology refers to clients that make requests to servers. This is the traditional way to structure a client/server architecture.
+* Push technology refers to servers that initiate information updates to clients.
+
+*The Difference*
+
+The difference between push and pull technology comes down to who initiates information updates. If the client initiates requests, it's pull. If the server initiates updates, it's push.
+
+*Approach*
+
+We want to achieve a push over pull strategies on a event based concept. In general Self Contained Systems should publish all domain facts as events to all interested services over an event broker. By receiving these events the receiver can decide if more information are need and can pull for these information.
+
+

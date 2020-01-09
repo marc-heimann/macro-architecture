@@ -1,0 +1,7 @@
+:sourcedir: {docdir}/chapters/concept/ui/
+include::{sourcedir}UI_Concepts.adoc[leveloffset=+0]
+include::{sourcedir}Central_Asset_Server.adoc[leveloffset=+1]
+include::{sourcedir}Include_Web_Component_Concept.adoc[leveloffset=+1]
+include::{sourcedir}Static_Supervisor_Application.adoc[leveloffset=+1]
+include::{sourcedir}Transclusion_Concept.adoc[leveloffset=+1]
+include::{sourcedir}Well-Known_Concept.adoc[leveloffset=+1]

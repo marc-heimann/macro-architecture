@@ -1,0 +1,31 @@
+:description: This document contains the whole macro architecture documentation.
+:organization: Swisslog
+:doctype: book
+:toc: left
+:toc-title: Table of Contents
+:toclevels: 5
+:sectnumlevels: 8
+:sectnums:
+:icons: font
+
+
+
+= Cloud Native Macro Architecture Documentation
+
+image::images/swisslog.png[Swisslog, 25%, align="right"]
+
+Author: <marc.heimann@swisslog.com>
+v0.7-draft, {docdate}
+
+
+
+include::chapters/goals/introduction_and_goals.adoc[]
+include::chapters/goals/cloud_native.adoc[]
+include::chapters/goals/prerequisites.adoc[]
+include::chapters/constrains/architecture_constraints.adoc[]
+include::chapters/concept/solution_strategy_and_concepts.adoc[]
+include::chapters/runtime/runtime_view.adoc[]
+include::chapters/deployment_view.adoc[]
+include::chapters/quality_scenarios.adoc[]
+include::chapters/technical_risks.adoc[]
+include::chapters/glossary.adoc[]

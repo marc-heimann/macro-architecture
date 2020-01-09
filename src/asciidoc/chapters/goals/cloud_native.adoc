@@ -1,0 +1,74 @@
+[[benefits-of-Self-Contained-Systems]]
+== Benefits of Cloud Native Applications
+
+=== Break Down Team Silos
+Traditional apps require many teams for each stage of an app’s development. 
+
+	* Dev
+	* QA
+	* IT
+	* Database admins
+	* Sysadmins
+	* Release management 
+	* Project management 
+
+each have their own goals and priorities. 
+
+Their agendas often clash, and it takes a toll on the application.
+
+With SCSs, team structures can be realigned to reflect the change in architecture. 
+Modern software delivery teams are small and cross-functional. 
+Teams are organized by the services they support. 
+This *keeps teams agile*, *improves collaboration* and *quickens decision-making*. 
+It also eliminates a host of accountability issues, whereby teams can relinquish responsibility for a feature after it is moves on from their team, 
+but before it is released.
+
+=== Release at the Speed of Ideas
+With the right infrastructure, the right tools to manage it, and the right team structure to bring it all together, the cumulative effect is that cloud-native releases become much more frequent—in fact, there aren’t any major releases. Every release affects a single service, or a couple of services at most. Because of this limited scope for every release, errors are easy to spot and fix. Rollback is easy with many tools capable of automatic rollbacks to the previous stable version when a new version fails.
+
+Autonomous teams can ship updates to the services they own without being dependent on other teams. With multiple teams releasing updates to many services every day, the pace of deployment is blinding. The largest web companies deploy thousands of times a day.
+
+This is the biggest advantage of a cloud-native architecture—that it takes you from idea to app in the quickest possible time.
+
+To conclude, cloud-native architecture is more than just running your apps using cloud instances. It goes deeper to change the way you plan infrastructure. This is possible only after the rise of Docker. With the foundational infrastructure changing, you need a new toolset that is purpose-built for operating in a cloud-native world. Teams aren’t left untouched. They are now smaller, agile, multi-functional, and empowered to make decisions pertaining to the services they manage. All these efforts combine to create momentum that leads to much faster releases.
+
+Cloud-native architecture is a lot of work to get started. However, it’s the obvious way forward if you want to grow and sustain your edge over the competition. 
+
+[[section-cloud-native-introduction]]
+== What is a cloud native application?
+Being cloud-native is more than just moving some of your workload to a public cloud vendor. It involves a completely different approach to infrastructure, application development, and team structure. Let’s dig deeper to understand what cloud-native architecture actually means and why it’s so important.
+Cloud-native is a way of approaching the development and deployment of applications in such a way that takes account of the characteristics and nature of the cloud - resulting in processes and workflows that fully take advantage of the platform.
+
+=== What does fully taking advantage of the cloud look like?
+
+==== Mirror the Structure of the Cloud with Self Contained Systems
+Firstly, a word on the cloud, as compared to traditional on-premises. On-premises infrastructure is a centralized system. Everything is (to all intents and purposes) in one place. In the cloud, however, servers and databases are distributed, i.e. not in one place.
+
+In this context, if you simply port over your app from server hardware to the cloud, you won’t get the most out of your migration. This is because apps that were hosted on hardware servers were built as monoliths. The codebase included every feature and service that made up the app as a single, giant lump of code. Today, with microservices architecture, apps are being built as a distributed collection of services, which pairs up perfectly with the distributed nature of the cloud.  
+
+The advantages of this approach mean that, for individual microservices, you can now take advantage of automation in various ways to maximize efficiency and free time and money:
+
+* *Auto-provisioning*: automatically provisioning environments as code
+* *Auto-scaling*: tracking the various components of your application and releasing and pulling resources automatically where appropriate
+* *Auto-redundancy*: cloud-native apps are inherently resilient to failure. In the event of an issue, app processing instantly moves to another server or data center automatically and seamlessly.
+
+This is a much more granular means of deploying the minimum resources necessary to reliably maintain performance.
+
+While it’s possible to just move your app with its legacy codebase to a cloud platform, that robs you of the benefits of being truly cloud-native.
+
+==== Containers Enable Microservices (or Self-contained systems)
+Underlying the microservices architecture is the rise of Docker and the container ecosystem. Managing your app as distinct services has implications on infrastructure. Every service in a microservices app needs to be a self-contained unit. Services need their own allotment of resources for computing, memory, and networking. However, both from a cost and management standpoint, it’s not feasible to 10x or 100x the number of VMs to host each service of your app as you move to the cloud. This is where containers come in. They are extremely lightweight, and provide the right amount of isolation to make a great alternative to VMs for packaging microservices, enabling the benefits above.
+
+==== A New Cloud-Native Toolset
+This fundamental change in infrastructure calls for a change in toolset as well. Legacy tools that were built to manage tasks across a few hardware servers can’t hold up under the complexity of microservices in the cloud. Simple things like latency optimization, root cause analysis of the backend and end-to-end monitoring can become complex in a distributed microservices app. The resource consumption of each service needs to be metered to ensure compromised services don’t affect other services, and to keep costs under control.
+
+The Cloud Native Computing Foundation hosts a number of open source projects that help run microservice apps. Here are a few we wil use at Swisslog as well:
+
+* *Kubernetes*: the leading container orchestration platform that lets you deploy and manage containers at scale
+
+* *Fluentd*: unifies logging by collecting and sharing log data almost everywhere you need it via 500+ plugins
+
+* *Prometheus*: a monitoring tool that records time-series data for distributed service- oriented applications. Its strength is that it can function even if the rest of the system has failed.
+
+This is a good sample list of the kind of tools cloud-native architecture requires.
+

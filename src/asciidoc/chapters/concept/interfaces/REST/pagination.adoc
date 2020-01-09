@@ -1,0 +1,85 @@
+[[pagination]]
+== Pagination
+
+=== Must: Support Pagination
+
+Access to lists of data items must support pagination for best client
+side batch processing and iteration experience. 
+Since it`s hard to forseen the growing of resource collections, each service has to provide pagination support.
+
+
+==== Offset Pagination
+
+Offset and limit is encoded as a query parameter to define the first resource and the maximal number.
+
+Limit/Offset Paging would look like `GET /items?limit=20&offset=100`.
+This query would return the 20 rows starting with the 100th row.
+
+Pagination can be should be combined with HATEOAS, by providing detailed pagination information like:
+
+* `total` size of the collection
+* `numberOfResources` of the current page
+* `totalPages` of the collection
+* `firstPage` states that current page is the first page
+* `lastPage` states that current page is the last page
+
+And and pagination links:
+
+* `next` page in the collection
+* `first` page in the collection
+* `last` page in the collection
+
+
+[source,JavaScript]
+----
+{
+  "_embedded" : {
+    "workstations" : [ {
+      "id" : "1",
+      "status" : "EMPTY",
+      "kickerStatus" : "CLOSED",
+      "maxPockets" : 5,
+      "_links" : {
+        "self" : {
+          "href" : "https://slcloud/bag-unloader/api/workstations/1"
+        },
+        "workstations" : {
+          "href" : "https://slcloud/bag-unloader/api/workstations"
+        }
+      }
+    }, {
+      "id" : "2",
+      "status" : "EMPTY",
+      "kickerStatus" : "CLOSED",
+      "maxPockets" : 5,
+      "_links" : {
+        "self" : {
+          "href" : "https://slcloud/bag-unloader/api/workstations/2"
+        },
+        "workstations" : {
+          "href" : "https://slcloud/bag-unloader/api/workstations"
+        }
+      }
+    } ]
+  },
+  "numberOfResources": 2,
+  "total": 5,
+  "totalPages": 3,
+  "firstPage": true,
+  "lastPage": false,
+  "_links" : {
+    "self" : {
+      "href" : "https://slcloud/bag-unloader/api/workstations?cursor=0&limit=2"
+    },
+    "next" : {
+      "href" : "https://slcloud/bag-unloader/api/workstations?cursor=1&limit=2"
+    },    
+    "first" : {
+      "href" : "https://slcloud/bag-unloader/api/workstations?cursor=0&limit=2"
+    },
+    "last" : {
+      "href" : "https://slcloud/bag-unloader/api/workstations?cursor=2&limit=2"
+    },
+  }
+}
+----

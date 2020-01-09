@@ -1,0 +1,161 @@
+[[section-introduction-and-goals]]
+== Introduction and Goals
+
+This documentation describes the macro architecture of Swisslog's Self Contained Systems approach. The macro-architectural decisions/concepts will give all Self Contained Systems teams a clear guideline. All decisions can be expressed from both perspectives, technical as well as functional. The advantages over a monolithic approach used in the past at Swisslog are shortly shown in the following image. These are the main purposes for the change in architecture.
+
+[ditaa]
+----
+/-------------------\   /-------------------\   /-------------------\ 
+|cE02               |   |c48E               |   |cE02               |
+| Faster delivery/  |   |                   |   | Accelerating the  |
+| shorter time to   |   | Lower the costs   |   | speed of          |
+| market            |   |                   |   | innovation        |
+|                   |   |                   |   |                   |
+\-------------------/   \-------------------/   \-------------------/
+
+/-------------------\   /-------------------\   /-------------------\ 
+|c48E               |   |cE02               |   |c48A               |
+| Maximize          |   | Increase customer |   | Customer focus/   |
+| flexibility       |   | satisfaction      |   | Follow the        |
+|                   |   |                   |   | customer          |
+|                   |   |                   |   |                   |
+\-------------------/   \-------------------/   \-------------------/
+----
+
+=== Requirements Overview
+
+The requirements of the macro architecture can be defined with the help of the issues, which are related to SynQ. Therefore the requirements will be derived by the issues, the SynQ approach does not solve today. Those issue-requirement-deflection can be found in the table below. Detailed descriptions of the single issues and why they actually are issues can be found in the following sub-chapters.
+
+[options="header", cols="2*"]
+|===
+|Circumstance
+|Requirement
+
+|Deployment Monolith
+|Do not choose for a monolithic approach for new solutions. We have chosen the approach of Self Contained Systems.
+
+|Canonical Data Model
+|Choose a data model with clear responsibilities
+
+|Hard to test
+|Because of their isolated nature, Self Contained Systems are way easier to be tested
+
+|No scaling possible
+|Self Contained Systems are designed to be scalable
+
+|Swisslog-framework
+|In the new approach no new frameworks should be implemented. It is recommended to fully focus upon 3rd party technologies
+|===
+
+
+==== Deployment Monolith
+The design of SynQ leads to a deployment monolith, this causes some issues. If there is any change within SynQ, there must be a complex re-testing to make sure, that everything still works fine. It also takes a huge amount of time to get familiar with the SynQ framework. There are issues in the code-maintainance due to the unknown scope of each procedure. For every project, there are a lot of changes in the sourcecode which cannot be brought to the baseline, therefore patches are only possible via a manual merging procedure.
+
+image::../../SOAOverview.png[Architecture SynQ is based on]
+
+==== Canonical Data Model
+There is no clear data responsibility and the whole system gets invalid, if there is a change in the data model. Additionally huge joins among tables are performed, which lead into high latencies.
+
+==== Hard To Test
+As a result of the chosen architecture style (Service Oriented Architecture), it is naturally given, that integrative testing can start after all functional components have been implemented and orchestrated.
+Switching over to a more isolated approach like SCS, makes it possible to integrate the process in a very early stage.
+
+==== No or few Scaling Possible
+SynQ offers no horizontal scalability, the only option to achieve horizontal scalability at the moment is a hardware update. There are no further options, if the hardware already runs at its limit.
+
+==== Additional Advantages
+Besides getting grip on issues SynQ does not completely solve, there are additional advantages by using the new Self Contained System-approach. Those advantages are explained in this section. 
+
+==== Platform Independence
+Customers are more and more looking for a solution which is platform-independent, there have already been customer-requests for a solution running in the cloud. By using a Self Contained System-approach with some technical decisions, there are no limits in using a special platform anymore. The new solution will be able to run on customer hardware or in the cloud. We are talking about "Logistics as a service".
+
+==== Support For Upcoming Changes / Updates
+At the moment it is hard to update or patch a system. The future solution will make changes easier and better to perform.
+Also it is possible to update a service without any downtime.
+
+==== Way Of Working
+The complete way of working will get more efficient, among other things, this means, that there will be less programming hours per project. There will be a focus upon specific system scope. Also the way of testing will get better, because the scope can be tested without using the whole system as an environment.
+
+==== Independent Software Parts
+By splitting up the system into Self Contained Systems, the single software parts can be independently developed. This gives some advantages:
+
+* There is no (or only limited) need for team coordination
+* Common software layers will be prevented
+* Decisions about the realization of the software can be taken within each team, this also includes, that different software parts can be realized in different programming languages or with different technologies. This also allows experimenting with modern and unknown technologies without endangering the system.
+* By building independent softare parts, it is simplified to adapt the software to customer needs
+
+Additionally the change from old approach to new approach will be easier to perform, because it can be exchanged partwise.
+
+==== Usage Of Common Practices And Technologies
+By changing the architectural approach to Self Contained Systems, the including step, which is performed is, to get rid off the Swisslog-specific frameworks, like SynQ or SPOC. This brings the following advantages:
+
+* The focus can be set to the business code itself
+* We can prevent building up structure code like user management, logging, configuration, e.t.c our own
+* By using common architecture best practices and 3rd party software frameworks, is becomes possible to outsource the implementation of parts or the whole solution
+* The training overhead is being reduced, due to the usage of commonly known technologies
+* Attractiveness of Swisslog as employer is strengthened by the usage of modern technologies and techniques 
+* The maintainance costs will be reduced, because we rely on common frameworks, and we won't build up our own framework again
+* The software deployment will get easier and there will be no need of expert knowledge for deploying the software
+* The heroism is getting reduced by distributing the responsibility over various business expert teams
+
+=== Quality Goals
+
+[options="header",cols="1,3,11"]
+|===
+|Priority
+|Goal
+|Description
+
+|1
+|Lower costs
+|Software projects of Swisslog most often are finished with an overrun. These overruns are being created usually in the factory test/integration test phases due to the executed integration of the various functional software components. Aim is to have a full blown process being executed within a software building block that is well testable so that early integration is possible. 
+
+|2
+|Faster start for new employees
+|At the moment a new Swisslog-employee have to learn a lot about SynQ to get started, this is a very time-consuming task, and after getting in touch with SynQ, it takes additional time to really get familiar with the framework (You need to know the whole picture not to make too much mistakes).
+
+|3
+|Shorter time to market
+|At the moment it is hard to calculate correctely, how long it will take to get to the commissioning of a project, also the time is very long for each project. This time should be reduced to lower costs.
+
+|4
+|Modern technologies
+|By using more modern technologies, without using proprietary Swisslog-frameworks on top of them, it will be easier to find new employee.
+
+|5
+|Scalability / Flexibility
+|In fact, one of the main goals of Self Contained System, this is also a goal for Swisslog, to be more future-proof.
+|===
+
+=== Stakeholders
+
+[options="header",cols="1,1,2"]
+|===
+|Role name
+|Contact
+|Expectations
+
+| Head of Software & Controls Development 
+| Tim Eick 
+| Please fill in expectations from Tim Eick
+ 
+| Head of Realization 
+| Frank Humpohl 
+| Deliver in time and budget
+
+| Software Solution
+| Marc Heimann 
+| Usage of more modern technologies and techniques and simplify all processes
+
+| Project Leaders 
+| _group of people_ 
+| Better scheduling for projects / Lower costs
+
+| Architects 
+| _group of people_ 
+| Solution which is clear to be used in projects
+
+| Developers in OPS 
+| _group of people_ 
+| Simple development and short introduction time
+|===

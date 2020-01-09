@@ -1,0 +1,31 @@
+== Central Asset Server
+
+It is planned to have a modular UI development taking place. Therefore, the UI will consist of various HTML based UI screens and fragments implemented as WebComponents and also of some WebComponents providing dashboard widgets which can be integrated at several places in a systemwide UI. 
+
+Having a modular UI concept in place causes two issues:
+
+ * 1st is you need to know who needs to include content of what service.  
+ * 2nd is how to guarantee a common look and feel of your whole application when various teams providing several UI fragments. 
+
+Answer to the 1st question is: you'll have to define dependencies within a Domain Driven UI Design View description.
+
+The answer to the 2nd question is: you'll have to provide systemwide assets.
+
+To provide these systemwide assets, a central web server needs to be in place that holds all the assets that will be consumed at runtime by all involved service UIs like operator workstations, supervisor screens and dashboard widgets.
+
+Assets you will find on the server are:
+
+* Cascading Style Sheets (css)
+* JavaScript
+* Image files
+
+=== Versioning
+Not to end up in total mess, you will have to give your assets version numbers that will explicitely point out a specific version of an asset. That gives the ability to prepare an update of assets in the background while the whole application stays on a consistent set of assets.
+
+=== Responsibilities
+Assets, located on the central asset server are owned by the UI/UX team. This team also decides together with the Product owner when and how to make use of certain assets on that server.
+
+The UI/UX team will also bring its own acceptance criteria that teams have to implement their code against to become UI/UX compliant. These details will be carried out into the teams by the Product Owner of the corresponding context.
+
+Specific implementation of a Asset Server
+At the moment it looks like all assets will be provided by a Nginx server.

@@ -1,0 +1,196 @@
+[[section-runtime-view]]
+== Runtime Environment
+
+* As runtime environment *link:https://kubernetes.io[Kubernetes]* will be used
+* All services must be deployable as/within *link:https://www.docker.com/what-docker[Docker]* a container
+* All service must be installable via Helm
+* The ELK Stack should be used for central Logging
+* Keycloak will be used as security provider
+* PostgesSql will be recommended as persistence layer
+
+=== Kubernetes
+
+==== ConfigMaps
+
+Configuration files for each service will be devlivered as config maps in kubernetes. ConfigMaps are mounted for a docker container into a given directory and can provide multiple configurations files.
+
+Each service will have it's own config map, where the config map name is reflacting the corresponding service name. According to <<immutable-infrastructure>>, config maps will not be patched, just re-deployed using a version number appendix.
+
+
+For example:
+
+The service "Stock Supplier" needs it's own configuration file and the general process area topology configuration. Similar to the "Stock Supplier", the "Stock Broker" has it's own configuration, but needs also access to the general process area topology.
+
+So basically, for both services 3 configuration files are available:
+
+* stock_supplier.yml
+* stock_broker.yml
+* pa_topology.yml
+
+These files will be deployed using follow config maps:
+
+** Stock_Supplier_000 (ConfigMap)
+*** stock-supplier.yml
+*** pa-topology.yml
+
+** Stock_Brocker_000 (ConfigMap)
+*** stock-broker.yml
+*** pa-topology.yml
+
+The config maps are attached to the corresponding service container.
+
+If the configuration for the "Stock Supplier" changes, a new config map will be deployed, including a new "Stock Supplier" instance:
+
+** Stock_Supplier_001 (ConfigMap)
+*** stock-supplier.yml
+*** pa-topology.yml
+
+Once the new setup is up and running, instances of the service with the old configuration will be taken offline.
+
+If the process area topology is changed, follow config maps will be deployed:
+
+** Stock_Supplier_002 (ConfigMap)
+*** stock-supplier.yml
+*** pa-topology.yml
+
+** Stock_Brocker_001 (ConfigMap)
+*** stock-broker.yml
+*** pa-topology.yml
+
+and news instances of the "Stock Supplier" and "Stock Broker" with the new configuration attached to it, started.
+
+==== Namespaces
+Namespaces is the concept of Kubernetes to segregate various workloads deployed in a cluster.
+
+Kubernetes itself distinguishes between system relevant workloads and those which are not.
+
+To stay compliant to the way, Kubernetes uses namespaces, it has been decided to go with the following concept:
+
+===== Kubernetes Namespaces
+
+[options="header",cols="5,11"]
+|=== 
+| Namespace Name
+| Purpose
+
+| kube-system
+| Is the namespace that is used by Kubernetes itself to provide the Kubernetes core functionality. All workloads of Kubernetes are deployed to this as this extends the system functionality. 
+
+| kube-public
+| Is the namespace that is meant to deploy everything that shall be accessible without any security in pace (i would never recomend to use it)
+
+| default
+| This namespace is meant to be used whenever just less workloads are deployed to the cluster to get rid of any namespace concept.
+|===
+
+
+===== Swisslog specific Kubernetes Namespaces
+
+[options="header",cols="5,11"]
+|=== 
+| Namespace Name
+| Purpose
+
+| sl-system
+| Is the namespace where all common runtime relevant workloads such as http://rook.io, http://istio.io or https://kafka.apache.org/ are being deployed to. 
+
+| sl-security
+| Is the namespace that is meant to deploy everything that is related to security aspects such as Keycloak.
+
+| sl-logging-metrics
+| All workloads that have to do with logging and metrics such as https://prometheus.io/ or https://www.elastic.co
+
+| sl-application
+| All Self Contained Systems and their DBMSs are being deployed to this Namespace. Teams have to follow this to avoid confusion and mess.
+
+|===
+ 
+
+==== Ingress
+TODO
+
+==== Storage
+TODO
+
+=== Helm
+
+Helm is a easy way to manage Kubernetes applications. Our deployment for integration and production system will be based on Helm charts. Development teams are requested to provide a Helm chart for theire own software, beside the devlivery of the docker container.
+
+To align the way of deploying services using Helm chart, further Helm specific requirements needs to be fulfilled by the teams.
+
+==== Helm requirements
+[horizontal]
+*Image*:: Provide a parameter "*image*"" to be able to change the docker image for the deployment.
+*Image Tag*:: Provide a parameter "*imageTag*"" to be able to change the docker image tag for the deployment.
+*Heath URL*:: Provide a liveness probe for your service in the deployment of your helm chart. Details can be found https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#define-a-liveness-http-request[here]
+*Resources*:: Provide expected memory and cpu usage values for your service in your Helm chart. The meaning of this values is defined in the https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/[Kubernetes - Managing Compute Resources for Containers]  documentation. The corresponding section in your deployment YAML file should look like this:
+[source, yaml]
+----
+spec:
+  containers:
+  - name: ...
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "250m"
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+----
+[horizontal]
+*Namespace*:: All resources of a Helm chart needs to provide a namespace parameter, which will be set during the deployment. The parameter need to be named "*Release.Namespace*". The YAML file should look like this:
+[source, yaml]
+----
+metadata:
+  namespace: {{ .Release.Namespace }}
+----
+
+[horizontal]
+*StorageClassName*:: Please use no storage class name in your Persitenc Volume Claims in case you want to use the storage class, which is makred as "default". If you want to use by purpose check before you install which storage classes are available.
+
+----
+spec:
+    storageClassName: " "
+----
+
+
+=== Kafka
+TODO
+
+=== Elastic Stack
+TODO
+==== FluentD
+TODO
+==== Elastic Search
+TODO
+==== Kibana
+TODO
+==== Grafana
+TODO
+==== Managing
+TODO
+===== Curator
+TODO
+===== Cerebro
+TODO
+
+=== Persistence
+TODO
+==== PostgreSql
+TODO
+
+=== Security
+TODO
+==== Keycloak
+TODO
+==== Cert-Manager
+TODO
+==== Certificate Issuer
+TODO
+
+=== UI
+TODO
+==== Frame Application for SVS/WS
+TODO
+==== Asset Server
+TODO

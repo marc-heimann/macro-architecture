@@ -1,0 +1,6 @@
+[[general-guidelines]]
+== REST Interfaces
+
+NOTE: This guide closely follows the https://opensource.zalando.com/restful-api-guidelines/[Zalando RESTful Guide]
+
+The titles are marked with the corresponding labels: {MUST}, {SHOULD}, {MAY}.

@@ -1,0 +1,153 @@
+ifndef::imagesdir[]
+:toc-title: Table of Contents
+:sectnumlevels: 8
+:sectnums:
+endif::imagesdir[]
+
+[[compatibility]]
+== Compatibility
+
+=== Must: Don't break backward compatibility
+
+Change APIs, but keep all consumers running. 
+Consumers usually have independent release lifecycles, focus upon stability, 
+and avoid changes that do not provide additional value. 
+APIs are contracts between service providers and service consumers that cannot be broken via unilateral decisions.
+
+There are two techniques to change APIs without breaking them:
+
+* Follow rules for compatible extensions
+* Introduce new API versions and still support older versions
+
+=== Should: Prefer Compatible Extensions
+
+API designers should apply the following rules to evolve RESTful APIs for services in a backward-compatible way:
+
+* Never change the semantic of fields (e.g. changing the semantic from customer-number to customer-id, as both are different unique customerkeys)
+* Enum ranges cannot be extended when used for output parameters -- clients may not be prepared to handle it.
+* Support redirection in case an URL has to change (https://en.wikipedia.org/wiki/HTTP_301[[underline]#301 Moved Permanently#]).
+
+Renaming of a property, in case you want to rename the **number** property to **houseNumber**.
+
+[source,JavaScript]
+----
+Server response:
+{
+  "street": {
+    "name": "Swisslogstrasse",
+    "number": "2",
+    "houseNumber": "2",
+  }...
+}
+ 
+Old clients expect:
+{
+  "street": {
+    "name": "Swisslogstrasse",
+    "number": "2"
+  }...
+}
+ 
+Newclients expect:
+{
+  "street": {
+    "name": "Swisslogstrasse",
+    "houseNumber": "2"
+  }...
+}
+----
+
+In case you want to change to merge the properties to **address **and change the structure of your resource:
+
+[source,JavaScript]
+----
+Server response:
+{
+  "street": {
+    "name": "Swisslogstrasse",
+     "number": "2",
+  },
+  "address": "Swisslogstrasse 2"
+}
+
+Old clients expect:
+{
+  "street": {
+    "name": "Swisslogstrasse  
+    "number": "2"
+  }
+}
+
+New clients expect:
+{
+  "address": "Swisslogstrasse 2"
+}
+----
+
+=== Must: Prepare client to not crash on compatible API Extensions
+
+Service clients should apply the robustness principle:
+
+* Be conservative with API requests and data passed as input, 
+e.g. avoid to exploit definition deficits like passing megabytes for strings withunspecified maximum length.
+
+* Be tolerant in processing and reading data of API responses, more specifically… 
+
+Service clients must be prepared for compatible API extensions of service providers:
+
+* Be tolerant with unknown fields in the payload (see also Fowler’s http://martinfowler.com/bliki/TolerantReader.html[[underline]#"TolerantReader"#] post), 
+i.e. ignore new fields but do not eliminate them from payload if needed for subsequent PUT requests
+
+* Be prepared that enumaration parameter may deliver new values; 
+either be agnostic or provide default behavior for unknown values.
+
+* Be prepared to handle HTTP status codes not explicitly specified in endpoint definitions. 
+Note also, that status codes are extensible. Default handling is how you would treat the corresponding x00 code 
+(see https://tools.ietf.org/html/rfc7231#section-6[[underline]#RFC7231 Section 6#]).
+
+* Follow the redirect when the server returns HTTP status https://en.wikipedia.org/wiki/HTTP_301[[underline]#301 Moved Permanently#]
+
+=== Should: Avoid Versioning
+
+When changing your RESTful APIs, do so in a compatible way and avoid generating additional API versions. 
+Multiple versions can significantly complicate understanding, testing, maintaining, evolving, operating and 
+releasing our systems (http://martinfowler.com/articles/enterpriseREST.html[[underline]#supplementaryreading#]).
+
+If changing an API can’t be done in a compatible way, then proceed in one of these three ways:
+
+* create a new resource (variant) in addition to the old resource variant
+* create a new service endpoint -- i.e. a new application with a new API (with a new domain name)
+* create a new API version supported in parallel with the old API by the same Self Contained System
+
+As we discourage versioning by all means because of the manifold disadvantages, 
+we strongly recommend to only use the first two approaches.
+
+=== Must: Use Media Type Versioning
+
+However, when API versioning is unavoidable,
+you have to design your multi-version RESTful APIs using media type versioning.
+Media type versioning is less tightly coupled since it supports content negotiation and hence reduces complexity of release management.
+
+Media type versioning: Here, version information and media type are provided
+together via the HTTP Content-Type header. For incompatible changes, a new media type version for the resource is created. 
+To generate the new representation version, consumer and producer can do content negotiation using the HTTP Content-Type and Accept headers. 
+In this example, a client wants only the new version of the response:
+
+----
+Accept: application/hal+json;version=2
+----
+
+A server responding to this, as well as a client sending a request with content should use the Content-Type header, 
+declaring that one is sending the new version:
+
+----
+Content-Type: application/hal+json;version=2.0.0
+----
+
+NOTE: APIs follow the principles of https://semver.org/spec/v2.0.0.html[*Semantic Versioning 2.0.0*]. Servers should always provide the full semantic version. Clients may request a less specific semantic version (i.e. A request for version 2 accepts any response with versions 2.x.y. A request for version 2.1 accepts any response with versions 2.1.x).
+
+NOTE: A server always provides a versioned API, starting with version 1.0.0
+
+NOTE: Clients must always include the requested API version in the Accept header. 
+Servers must be tolerant to requests without an API version in the Accept header, to support other clients like a web browser.
+If the client does not set a version in the header, the server responds with the latest version.

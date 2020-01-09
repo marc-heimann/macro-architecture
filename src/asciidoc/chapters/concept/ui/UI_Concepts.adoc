@@ -1,0 +1,48 @@
+== UI Concepts
+
+With the Self Contained System based architecture approach we aim for a system that is modular and highly independent.
+
+That means that we also aim for modularisation of the UI parts of a systems not to end up in a situation where we have a set of independent backend processes but on the other hand to have a UI monolith.
+
+Reason for that is that we realized in the past that most of the overrun hours have been produced because of dependencies between technical layers like a backend team requires a change in the UI layer that needs to be implemented by a UI team. In the future we would like to get rid of this kind of dependencies and bring the teams into position to solve their issues on their own.
+
+Further we have indeed a requirement to deliver a complete UI for a whole system that behaves and looks like one monolithic UI.
+
+This chapter explains the concepts that will lead to exactly the desired situation. It consists of:
+
+* Central Asset Server
+* Include Web Component Concept
+*  Well-Known Concept
+* Transclusion Concept
+* Some related topics will be introduced shortly in the following sections.
+
+=== IFrames
+An IFrame (Inline Frame) is an https://asciidoctor.org/docs/asciidoc-syntax-quick-reference/[HTML] document embedded inside another HTML document on a website. The IFrame HTML element is often used to insert content from another source, such as an advertisement, into a Web page. Although an IFrame behaves like an inline image, it can be configured with its own scrollbar independent of the surrounding page's scrollbar.
+
+A Web designer can change an IFrame's content without requiring the user to reload the surrounding page. This capacity is enabled through JavaScript or the target attribute of an HTML anchor. Web designers use IFrames to embed interactive applications in Web pages, including those that employ Ajax (Asynchronous JavaScript and XML), like Google Maps or ecommerce applications.
+
+In 2008, hackers seeded Internet search results with malicious IFrame code, leading to IFrame overlay attacks on many prominent websites, including those for USA Today and ABC News. The attackers inserted IFrame code into the saved search results of legitimate websites. When a visitor clicked on a link from the compromised search tool, he would be redirected to a malicious website by the IFrame code. The unsuspecting user's computer would then be vulnerable to the automatic download of malware.
+
+=== Web components
+Web components are a set of web platform APIs that allow you to create new custom, reusable, encapsulated HTML tags to use in web pages and web apps. Custom components and widgets build on the Web Component standards can be used with any JavaScript library or framework that works with HTML.
+
+Web components are based on existing web standards. Features to support web components are currently being added to the HTML and DOM specs, letting web developers easily extend HTML with new elements with encapsulated styling and custom behavior.
+
+Web components are based on four main specifications:
+
+* Custom Elements
+** The Custom Elements specification lays the foundation for designing and using new types of DOM elements.
+* Shadow DOM
+** The shadow DOM specification defines how to use encapsulated style and markup in web components.
+* HTML imports
+** The HTML imports specification defines the inclusion and reuse of HTML documents in other HTML documents.
+* HTML Template
+** The HTML template element specification defines how to declare fragments of markup that go unused at page load, but can be instantiated later on at runtime.
+
+A Supervisor prototype for Swisslog Self Contained Systems using Web Components is in development. For the current status and more detailed information on the implementation, see Team 1 - Prototype. General concepts for Web Components are presented at Include Web Component Concept.
+
+Unfortunately, web componets do not have full support on all common browsers. Especially Firefox and Edge have no support for custom elements and shadow DOM, the current status of development can be viewed at webcomponents.org. As long as the development is in progress, Polyfills can be used to get web components running on all common browsers.
+
+=== Transclusion of HTML
+
+In computer science, *transclusion* is the inclusion of part or all of an electronic document into one or more other documents by hypertext reference. Transclusion is usually performed when the referencing document is displayed, and is normally automatic and transparent to the end user. The result of transclusion is a single integrated document made of parts assembled on the fly from separate sources, possibly stored on different computers in disparate places. Read more about transclusion on Transclusion Concept.

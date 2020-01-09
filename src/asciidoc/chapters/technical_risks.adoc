@@ -1,0 +1,17 @@
+[[section-technical-risks-and-debts]]
+== Risks and Technical Debts
+
+[options="header" cols="1, 2"]
+|===
+| Possible Risk 
+| Explanation
+
+| Mechanism is to slow 
+| Self Contained Systems have per definition a higher communication rate between each other as a monolythic application-approach has. This is the reason, that many people think, it could be to slow.
+
+| Not enough knowledge 
+| For every developer at Swisslog, Self Contained Systems are new. There could be problems in getting started with a Self Contained System-approach
+
+| Safety/Security Issues 
+| Because of the high communication-rate it is very important, to have a stable security concept in place.
+|===

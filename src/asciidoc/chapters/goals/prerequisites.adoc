@@ -1,0 +1,67 @@
+[[benefits-of-Self-Contained-Systems]]
+== Benefits of Cloud Native Systems
+
+TIP: To get a first introduction into the topic "Self Contained Systems", the book "Microservices" by Eberhard Wolff is recommended.
+
+=== Easier to build and maintain apps
+Self Contained Systems development focuses on simplicity. Applications are easier to create and maintain when they’re split up into smaller, easily developable functionality modules. It is also easier to code, deploy, rebuild, re-deploy and manage the Self Contained System. Moreover, each Self Contained System can be designed using different programming languages, databases and software environments. 
+
+If a particular Self Contained System uses too much memory or overloads the processor, it will only affect the functionality of that particular service. Each service can be deployed independently. For example, Kubernetes lets you run your application without provisioning or managing the servers. After uploading your application, Kubernetes manages everything required to run and scale the application.
+
+=== Organized around business capabilities
+Self Contained Systems facilitate the creation of products rather than projects. Teams can focus more upon developing business functionality instead of creating code logic and writing lengthy lines of code. They can be more creative, and center their working around business capabilities rather than focusing on technologies. 
+
+Self Contained Systems can be used in multiple contexts – the same Self Contained System can be reused many business process or over different business channels. Each team member is responsible for a particular service, which results in creating a smart, productive, cross-functional team.
+
+=== Improved productivity and speed
+As different teams or developers can work on different components simultaneously and you don’t have to wait for others to finish developing a particular piece of code functionality, the Self Contained Systems architecture can tackle productivity and development speed issues in a much effective manner. 
+
+It is also convenient to speed up quality assurance as each Self Contained System can be tested independently even while other programmers are working on their modules.
+
+=== Flexibility in implementing technologies and scalability aspects
+Each Self Contained System can be developed using a "different" technology. This simplifies the process of selecting the most appropriate tech stack to fulfill specific needs of each business component. Decoupled services written in different programming languages can coexist. This is good for scaling your solutions in the future. With Self Contained Systems, one can quickly add new components into the existing architecture and scale a business process.
+
+=== Autonomous, cross-functional teams
+Self Contained Systems are a great blessing for distributed or remote teams. It can be messy and complicated to develop a massive monolith system if you’re working across the globe. Developers get more independence and work autonomously – they can make technical decisions quickly. So, if you’re developing a large scale solution, be sure to consider Self Contained System architecture.
+
+=== Deriving the business value
+The Self Contained Systems architecture does not define or refer to a particular set of technologies, processes, or tools. Rather, you need to focus upon the goals. For any business, the sooner the work processes are automated, the quicker will be the delivery. In addition, automated processes have to be reliable and consistent in terms of what they deliver. The real business value of Self Contained Systems can be realized by focusing upon two key aspects – speed and reliability – by balancing them effectively as per your needs.
+
+==== Speed
+Doing more in less time results in increased productivity and more sales. More sales mean enhanced ROIs.
+
+==== Agility
+Self Contained Systems platform offer agility while developing business functionality so businesses can build and deliver newer and more frequent products, functions, and features.
+
+==== Composability
+Compared to monolithic applications, Self Contained Systems functionality, like those offered by Amazon Self Contained Systems, can be developed within relatively shorter time frames and easily updated.
+
+==== Comprehensibility
+They simplify development planning, increase accuracy levels, and allow new resources to understand, build and maintain the functionality quickly.
+
+==== Independent deployability
+Each Self Contained System can be deployed independently, therefore each business component can be prototyped, developed and produced more quickly.
+
+==== Organizational alignment
+When the management, process users and the development team are aligned and share a common focus, the ramp-up time is reduced significantly and teams find it easier to iterate the development process and build complex functionality in less time.
+
+==== Polyglotism
+When different technologies and development platforms are used for developing a single component, additional functionality can be captured through the technologies and business goals can be precisely achieved.
+
+==== Reliability
+Consistent work flows result in streamlined delivery processes and increased sales activity.
+
+==== Greater efficiency
+Self Contained Systems architecture reduces infrastructure costs and mitigates the risk of capacity related service outages
+
+==== Independent manageability
+Self Contained Systems reduce scheduled down-times
+
+==== Replaceability of components
+Self Contained Systems help to reduce technical debt created by aging systems and components
+
+==== Stronger resilience and higher availability
+Self Contained Systems tend to focus upon single processes rather than the entire business scope to it is not difficult to develop them. Moreover, they can be easily tested and debugged so they’re more resilient and ensure improved customer experience.
+
+==== Better runtime scalability
+Services can grow or shrink as the business scope changes.
